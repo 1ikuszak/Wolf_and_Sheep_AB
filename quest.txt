@@ -1,3 +1,6 @@
+gcc engine.c wolf_and_sheep.c -o runn
+./runn
+
 Wolf field = 2 
 
 
