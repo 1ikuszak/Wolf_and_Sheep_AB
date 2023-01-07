@@ -30,7 +30,9 @@ typedef struct
 extern void display(Board *board);
 extern Board start_layout;
 extern Board makeMove(Board board, Move move);
-extern void GenerateWolfMoves(Board board);
+extern int GenerateWolfMoves(Board board);
+extern int isLeagalSheep(Board *board, Move move);
+
 
 
 #endif

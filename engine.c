@@ -48,16 +48,18 @@ void main(void) {
       board = start_layout;
 
     else if (strstr(bufor, "!ruch") == bufor && dlugosc_bufora == 11)
+    {
       board = makeMove(board, (Move) {.start_filed = (bufor[7] - '1') * 8 + bufor[6] - 'a',
       .destined_field = (bufor[10] - '1') * 8 + bufor[9] - 'a'});
-    
+      GenerateWolfMoves(board);
+    }
     else if (strstr(bufor, "!generuj") == bufor && dlugosc_bufora == 8)
       GenerateWolfMoves(board);
+      
   }
 
   pthread_join(watek_silnika, NULL);
 
 }
-
 
 
