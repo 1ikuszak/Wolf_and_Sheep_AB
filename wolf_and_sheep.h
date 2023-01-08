@@ -32,7 +32,6 @@ extern Board start_layout;
 extern Board makeMove(Board board, Move move);
 extern int GenerateWolfMoves(Board board);
 extern int isLeagalSheep(Board *board, Move move);
-
-
+extern int GenerateSheepMoves(Board *board);
 
 #endif

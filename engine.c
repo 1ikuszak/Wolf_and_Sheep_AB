@@ -54,8 +54,13 @@ void main(void) {
       GenerateWolfMoves(board);
     }
     else if (strstr(bufor, "!generuj") == bufor && dlugosc_bufora == 8)
+    {
+      printf("Wolf\n");
       GenerateWolfMoves(board);
-      
+      printf("\n");
+      printf("Sheep:\n");
+      GenerateSheepMoves(&board);
+    }
   }
 
   pthread_join(watek_silnika, NULL);
