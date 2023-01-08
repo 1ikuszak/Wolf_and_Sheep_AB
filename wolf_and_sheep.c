@@ -60,8 +60,6 @@ void display(Board *board)
 Board makeMove(Board board, Move move)
 {
     Board new_board = board;
-    // // printf("%d, %d\n", new_board.field.__2D[move.destined_field], new_board.field.__1D[move.destined_field]);
-    // printf("%d, %d",move.start_filed, move.destined_field);
 
     new_board.field.__1D[move.destined_field] = new_board.field.__1D[move.start_filed];
     new_board.field.__1D[move.start_filed] = ' ';
@@ -109,7 +107,7 @@ void int_to_board_pos(int pos)
     int col =  (pos % BOARD_WIDTH);
     int row = (pos / BOARD_WIDTH) + 1;
 
-    printf("\t%c %d", col + 'A', row);
+    printf("\t%c%d", col + 'A', row);
 }
 
 
@@ -131,14 +129,14 @@ int GenerateWolfMoves(Board board)
     int pos_4 = board.wolf_pos - BOARD_WIDTH - 1;
  
 
-    if (row != BOARD_HEIGHT -1)
+    if (row != BOARD_HEIGHT - 1)
     {
         if (pos_1 > 0 && board.field.__1D[pos_1] == ' ' && col != 0)
         {
             possible_wolf_moves[counter].destined_field = pos_1 ;
             counter ++;
         }
-        if (pos_2> 0  && board.field.__1D[pos_2] == ' ' && col != BOARD_WIDTH - '1') // tu zmienilem
+        if (pos_2> 0  && board.field.__1D[pos_2] == ' ' && col != BOARD_WIDTH - 1)
         {
             possible_wolf_moves[counter].destined_field = pos_2;
             counter ++;
@@ -168,7 +166,7 @@ int GenerateWolfMoves(Board board)
     printf("ruchy:\n");
     for (int i = 0; i < counter; i++)
     {
-        printf("%d -> %d", possible_wolf_moves[i].start_filed, possible_wolf_moves[i].destined_field);
+        printf("|%d| field: %d -> %d", counter, possible_wolf_moves[i].start_filed, possible_wolf_moves[i].destined_field);
         int_to_board_pos(possible_wolf_moves[i].destined_field);
         printf("\n");
     }
@@ -192,32 +190,41 @@ int GenerateSheepMoves(Board *board)
             if(board->field.__2D[row][col] == 'S')
             {   
                 // sprawdzamy czy owce maja miejsce na ruch do przodu
-                if (row < BOARD_HEIGHT - '1');
+                if (row < BOARD_WIDTH -1);
                 {   
-                    // sprawdzamy czy owce sa na prawej granicy i czy docelowe pole jest wolne
-                    if (col != BOARD_WIDTH - '1' && board->field.__2D[row][col] == ' ')
+                    // sprawdzamy czy owca jest na prawej granicy i czy docelowe pole jest wolne
+                    if (col != BOARD_WIDTH - 1)
                     {
-                        // dodajemy obiekt (Move) do listy []
-                        possible_sheep_moves[counter].start_filed = BOARD_WIDTH * row + col,
-                        possible_sheep_moves[counter].destined_field = BOARD_WIDTH * (row-1) + col + 1;
-                        printf("|%d| field: %d -> %d\n", counter, possible_sheep_moves[counter].start_filed, possible_sheep_moves[counter].destined_field);
-                        counter ++;
+                        // sprawdzamy czy pole jest wolne
+                        if (board->field.__2D[row + 1][col + 1] != 'S' && board->field.__2D[row + 1][col + 1] != 'W')
+                        {
+                            // dodajemy obiekt (Move) do listy []
+                            possible_sheep_moves[counter].start_filed = BOARD_WIDTH * row + col,
+                            possible_sheep_moves[counter].destined_field = BOARD_WIDTH * (row-1) + col + 1;
+                            printf("|%d| field: %d -> %d\n", counter, possible_sheep_moves[counter].start_filed, possible_sheep_moves[counter].destined_field);
+                            counter ++;
+                        }
                     }
-                    // sprawdzamy czy owce sa na leweh granicy i czy docelowe pole jest wolne
-                    if(col != 0 && board->field.__2D[row][col] == ' ')
+                    // sprawdzamy czy owca jest na lewej granicy i czy docelowe pole jest wolne
+                    if(col != 0)
                     {
-                        // dodajemy obiekt (Move) do listy []
-                        possible_sheep_moves[counter].start_filed = BOARD_WIDTH * row + col,
-                        possible_sheep_moves[counter].destined_field = BOARD_WIDTH * (row-1) + col - 1;
-                        printf("|%d| field: %d -> %d\n", counter, possible_sheep_moves[counter].start_filed, possible_sheep_moves[counter].destined_field);
-                        counter ++;
+                        // sprawdzamy czy pole jest wolne
+                        if (board->field.__2D[row + 1][col - 1] != 'S' && board->field.__2D[row + 1][col - 1] != 'W')
+                        {
+                            // dodajemy obiekt (Move) do listy []
+                            possible_sheep_moves[counter].start_filed = BOARD_WIDTH * row + col,
+                            possible_sheep_moves[counter].destined_field = BOARD_WIDTH * (row-1) + col - 1;
+                            printf("|%d| field: %d -> %d\n", counter, possible_sheep_moves[counter].start_filed, possible_sheep_moves[counter].destined_field);
+                            counter ++;
+                        }
+
                     }
                 }
             }
         }
     }
 
-    return 0;
+    return 1;
 }
 
 
