@@ -34,5 +34,7 @@ extern int GenerateWolfMoves(Board board);
 extern int GenerateSheepMoves(Board *board);
 extern int isLeagalSheep(Board *board, Move move);
 extern int isLeagalWolf(Board *board, Move move);
+extern int checkIfLegal(Board *board, Move move);
+
 
 #endif

@@ -50,22 +50,19 @@ void main(void) {
 
     else if (strstr(bufor, "!ruch") == bufor && dlugosc_bufora == 11)
     {
-      if (isLeagalWolf(&board, (Move) {.start_filed = (bufor[7] - '1') * 8 + bufor[6] - 'a',
+      if (checkIfLegal(&board, (Move) {.start_filed = (bufor[7] - '1') * 8 + bufor[6] - 'a',
       .destined_field = (bufor[10] - '1') * 8 + bufor[9] - 'a'}))
       {
         board = makeMove(board, (Move) {.start_filed = (bufor[7] - '1') * 8 + bufor[6] - 'a',
         .destined_field = (bufor[10] - '1') * 8 + bufor[9] - 'a'});
-        GenerateWolfMoves(board);
       }
     }
-    else if (strstr(bufor, "!generuj") == bufor && dlugosc_bufora == 8)
-    {
-      printf("Wolf\n");
+    else if (strstr(bufor, "!wilk") == bufor && dlugosc_bufora == 5)
       GenerateWolfMoves(board);
-      printf("\n");
-      printf("Sheep:\n");
+    
+    else if (strstr(bufor, "!owca") == bufor && dlugosc_bufora == 5)
       GenerateSheepMoves(&board);
-    }
+  
   }
 
   pthread_join(watek_silnika, NULL);

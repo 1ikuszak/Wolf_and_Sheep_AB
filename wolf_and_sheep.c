@@ -78,43 +78,56 @@ Board makeMove(Board board, Move move)
 }
 
 
-int isLeagalWolf(Board *board, Move move)
+
+int checkIfLegal(Board *board, Move move)
 {
     int pos_1 = move.start_filed + BOARD_WIDTH + 1;
     int pos_2 = move.start_filed + BOARD_WIDTH - 1;
     int pos_3 = move.start_filed - BOARD_WIDTH + 1;
     int pos_4 = move.start_filed - BOARD_WIDTH - 1;
 
-    if (move.destined_field == pos_1 && pos_1 > 0 && board->field.__1D[pos_1] == ' ')
-        return true;
-    
-    else if (move.destined_field == pos_2 && pos_2 > 0 && board->field.__1D[pos_2] == ' ')
-        return true;
-
-    else if (move.destined_field == pos_3 && pos_3 > 0 && board->field.__1D[pos_3] == ' ')
-        return true;
-    
-    else if (move.destined_field == pos_4 && pos_4 > 0 && board->field.__1D[pos_4] == ' ')
-        return true;
-    
-    else
+    switch (board->field.__1D[move.start_filed])
     {
-        printf("choose different destined field");
+    case 'W':
+    {
+        if (move.destined_field == pos_1 && pos_1 > 0 && board->field.__1D[pos_1] == ' ')
+            return true;
+
+        else if (move.destined_field == pos_2 && pos_2 > 0 && board->field.__1D[pos_2] == ' ')
+            return true;
+
+        else if (move.destined_field == pos_3 && pos_3 > 0 && board->field.__1D[pos_3] == ' ')
+            return true;
+        
+        else if (move.destined_field == pos_4 && pos_4 > 0 && board->field.__1D[pos_4] == ' ')
+            return true;
+
+        else
+        {
+            printf("choose different destined field");
+            return false;
+        }
+    }
+
+    case 'S':
+    {
+        if (move.destined_field == pos_3 && pos_3 > 0 && board->field.__1D[pos_3] == ' ')
+            return true;
+        else if (move.destined_field == pos_4 && pos_4 > 0 && board->field.__1D[pos_4] == ' ')
+            return true;
+        else
+        {
+            printf("choose different destined field");
+            return false;
+        }
+    }
+
+    default:
+        printf("wrong start field input");
         return false;
     }
 }
 
-
-int isLeagalSheep(Board *board, Move move)
-{
-    printf("%c, %d", move.start_filed, move.start_filed);
-    if (move.destined_field == move.start_filed - BOARD_WIDTH + 1)
-        return 1;
-    if (move.destined_field == move.start_filed - BOARD_WIDTH + 1)
-        return 1;
-    else
-        return 0;
-}
 
 
 void int_to_board_pos(int pos)
