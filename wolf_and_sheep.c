@@ -1,5 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include <stdbool.h>
+
 
 #include "wolf_and_sheep.h"
 
@@ -76,29 +78,42 @@ Board makeMove(Board board, Move move)
 }
 
 
-int isLeagalWolf(Move move)
+int isLeagalWolf(Board *board, Move move)
 {
     int pos_1 = move.start_filed + BOARD_WIDTH + 1;
-    if (move.destined_field == pos_1 && pos_1 > 0)
-        return 1;
-    
     int pos_2 = move.start_filed + BOARD_WIDTH - 1;
-    if (move.destined_field == pos_2 && pos_2 > 0)
-        return 1;
-
     int pos_3 = move.start_filed - BOARD_WIDTH + 1;
-    if (move.destined_field == pos_3 && pos_3 > 0)
-        return 1;
-    
     int pos_4 = move.start_filed - BOARD_WIDTH - 1;
-    if (move.destined_field == pos_4 && pos_4 > 0)
-        return 1;
+
+    if (move.destined_field == pos_1 && pos_1 > 0 && board->field.__1D[pos_1] == ' ')
+        return true;
+    
+    else if (move.destined_field == pos_2 && pos_2 > 0 && board->field.__1D[pos_2] == ' ')
+        return true;
+
+    else if (move.destined_field == pos_3 && pos_3 > 0 && board->field.__1D[pos_3] == ' ')
+        return true;
+    
+    else if (move.destined_field == pos_4 && pos_4 > 0 && board->field.__1D[pos_4] == ' ')
+        return true;
     
     else
     {
         printf("choose different destined field");
-        return 0;
+        return false;
     }
+}
+
+
+int isLeagalSheep(Board *board, Move move)
+{
+    printf("%c, %d", move.start_filed, move.start_filed);
+    if (move.destined_field == move.start_filed - BOARD_WIDTH + 1)
+        return 1;
+    if (move.destined_field == move.start_filed - BOARD_WIDTH + 1)
+        return 1;
+    else
+        return 0;
 }
 
 
@@ -166,7 +181,7 @@ int GenerateWolfMoves(Board board)
     printf("ruchy:\n");
     for (int i = 0; i < counter; i++)
     {
-        printf("|%d| field: %d -> %d", counter, possible_wolf_moves[i].start_filed, possible_wolf_moves[i].destined_field);
+        printf("|%d| field: %d -> %d", i, possible_wolf_moves[i].start_filed, possible_wolf_moves[i].destined_field);
         int_to_board_pos(possible_wolf_moves[i].destined_field);
         printf("\n");
     }
@@ -228,16 +243,7 @@ int GenerateSheepMoves(Board *board)
 }
 
 
-int isLeagalSheep(Board *board, Move move)
-{
-    printf("%c, %d", move.start_filed, move.start_filed);
-    if (move.destined_field == move.start_filed - BOARD_WIDTH + 1)
-        return 1;
-    if (move.destined_field == move.start_filed - BOARD_WIDTH + 1)
-        return 1;
-    else
-        return 0;
-}
+
 
 
 // void GenerateSheepMoves(Board *board)
