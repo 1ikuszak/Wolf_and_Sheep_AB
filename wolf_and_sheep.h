@@ -1,3 +1,6 @@
+#include <stdbool.h>
+
+
 #ifndef WOLF_AND_SHEEP
 #define WOLF_AND_SHEEP
 
@@ -32,9 +35,12 @@ extern Board start_layout;
 extern Board makeMove(Board board, Move move);
 extern int GenerateWolfMoves(Board board);
 extern int GenerateSheepMoves(Board *board);
-extern int isLeagalSheep(Board *board, Move move);
-extern int isLeagalWolf(Board *board, Move move);
-extern int checkIfLegal(Board *board, Move move);
+extern bool checkIfLegal(Board *board, Move move);
+extern bool WolfWinCheck (Board *board);
+extern bool SheepWinCheck(Board *board);
+extern bool WolfWinCheck (Board *board);
+
+
 
 
 #endif

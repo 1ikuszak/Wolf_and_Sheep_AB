@@ -55,6 +55,7 @@ void main(void) {
       {
         board = makeMove(board, (Move) {.start_filed = (bufor[7] - '1') * 8 + bufor[6] - 'a',
         .destined_field = (bufor[10] - '1') * 8 + bufor[9] - 'a'});
+        display(&board); 
       }
     }
     else if (strstr(bufor, "!wilk") == bufor && dlugosc_bufora == 5)

@@ -79,7 +79,7 @@ Board makeMove(Board board, Move move)
 
 
 
-int checkIfLegal(Board *board, Move move)
+bool checkIfLegal(Board *board, Move move)
 {
     int pos_1 = move.start_filed + BOARD_WIDTH + 1;
     int pos_2 = move.start_filed + BOARD_WIDTH - 1;
@@ -199,7 +199,7 @@ int GenerateWolfMoves(Board board)
         printf("\n");
     }
 
-    return 1;
+    return counter;
 }
 
 
@@ -245,15 +245,30 @@ int GenerateSheepMoves(Board *board)
                             printf("|%d| field: %d -> %d\n", counter, possible_sheep_moves[counter].start_filed, possible_sheep_moves[counter].destined_field);
                             counter ++;
                         }
-
                     }
                 }
             }
         }
     }
-
-    return 1;
 }
+
+
+bool WolfWinCheck (Board *board)
+{
+    if(board->field.__1D[board->wolf_pos] >= (BOARD_HEIGHT -1) * BOARD_WIDTH)
+        return true;
+    
+    return false;
+}
+
+bool SheepWinCheck(Board *board)
+{
+    if (GenerateSheepMoves(board) == 0)
+        return true;
+    
+    return false;
+}
+
 
 
 
