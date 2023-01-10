@@ -3,6 +3,7 @@
 #include <stdbool.h>
 
 
+
 #include "wolf_and_sheep.h"
 
 
@@ -139,9 +140,10 @@ void int_to_board_pos(int pos)
 }
 
 
-int GenerateWolfMoves(Board board)
+Move *GenerateWolfMoves(Board board)
 {
     Move possible_wolf_moves[MAX_WOLF_MOVES];
+
     int counter = 0;
 
     int col =  board.wolf_pos % BOARD_WIDTH;
@@ -199,12 +201,13 @@ int GenerateWolfMoves(Board board)
         printf("\n");
     }
 
-    return counter;
+    board.wolf_moves = counter;
+    return(possible_wolf_moves);
 }
 
 
 
-int GenerateSheepMoves(Board *board)
+Move *GenerateSheepMoves(Board *board)
 {
     Move possible_sheep_moves[MAX_SHEEP_MOVES];
 
@@ -250,6 +253,9 @@ int GenerateSheepMoves(Board *board)
             }
         }
     }
+    board->sheep_moves = counter;
+
+    return (possible_sheep_moves);
 }
 
 
@@ -270,33 +276,27 @@ bool SheepWinCheck(Board *board)
 }
 
 
-
-
-
-
-// void GenerateSheepMoves(Board *board)
-// {
-//     for(int col = 0; col < BOARD_WIDTH; col++)
-//       {
-//         for(int row = 0; row < BOARD_HEIGHT; row++)
-//         {
-//           if(board->field.__2D[row][col] == 'S')
-//           {
-//             printf("SHEEP %c%c: ", col + 1 + '0' + 48, row + 1 + '0');
-//             for(int col1 = 0; col1 < BOARD_WIDTH; col1++)
-//             {
-//               for(int row1 = 0; row1 < BOARD_HEIGHT; row1++)
-//               {
-//                 if(checkIfLegall(board, (Move) {.start_filed = board->field.__2D[row][col], .destined_field = board->field.__2D[row1][col1]}, col, row, col1, row1) == 1)
-//                 {
-//                   possible_moves[counter] = (Move) {.start_filed = board->field.__2D[row][col], .destined_field = board->field.__2D[row1][col1]};
-//                   counter++;
-//                   //printf("%c%c ", col1 + 1 +'0'+ 48, row1 + 1 +'0');
-//                 }
-//               }
-//             }
-//             printf("\n");
-//           }
-//         }
-//       }
-// }
+int positionRating(Board *board)
+{
+    int rating = 0;
+    switch (board->on_move)
+    {
+    case WOLF:
+    {
+        rating = (board->wolf_pos / BOARD_WIDTH) + 1;
+        break;
+    }
+    case SHEEP:
+    {
+        rating = 5 - board->wolf_moves;
+        break;
+    }
+    default:
+        {
+            printf("rating went wrong");
+            break;
+        }
+    }
+    
+    return(rating);
+}

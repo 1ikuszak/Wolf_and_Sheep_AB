@@ -19,6 +19,8 @@ typedef struct
 
   side on_move;
   int wolf_pos;
+  int wolf_moves;
+  int sheep_moves;
   
 } Board;
 
@@ -29,16 +31,30 @@ typedef struct
 } Move;
 
 
+typedef struct 
+{
+  int search_depth;
+  int knots_w_generated_moves;
+  int rated_branch;
+  int number_of_moves;
+  int last_print;
+  char moves[];
+} Statistic;
+
+
+
 
 extern void display(Board *board);
 extern Board start_layout;
 extern Board makeMove(Board board, Move move);
-extern int GenerateWolfMoves(Board board);
-extern int GenerateSheepMoves(Board *board);
+extern Move *GenerateWolfMoves(Board board);
+extern Move *GenerateSheepMoves(Board *board);
 extern bool checkIfLegal(Board *board, Move move);
 extern bool WolfWinCheck (Board *board);
 extern bool SheepWinCheck(Board *board);
 extern bool WolfWinCheck (Board *board);
+extern int positionRating(Board *board);
+
 
 
 
