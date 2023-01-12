@@ -9,6 +9,8 @@
 
 int flaga_stopu = 0;
 Move mozliwe_ruchy[100];
+Statistic stats;
+
 
 void silnik() {}
 
@@ -63,7 +65,7 @@ void main(void) {
     
     else if (strstr(bufor, "!owca") == bufor && dlugosc_bufora == 5)
       GenerateSheepMoves(&board);
-  
+      negmax(&board, 5, -10000, 10000, &stats);
   }
 
   pthread_join(watek_silnika, NULL);

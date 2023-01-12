@@ -31,6 +31,7 @@ typedef struct
 } Move;
 
 
+
 typedef struct 
 {
   int search_depth;
@@ -38,9 +39,9 @@ typedef struct
   int rated_branch;
   int number_of_moves;
   int last_print;
+  int start;
   char moves[];
 } Statistic;
-
 
 
 
@@ -54,7 +55,7 @@ extern bool WolfWinCheck (Board *board);
 extern bool SheepWinCheck(Board *board);
 extern bool WolfWinCheck (Board *board);
 extern int positionRating(Board *board);
-
+extern int negmax(Board *board, int depth, int alpha, int beta, Statistic* stats);
 
 
 
