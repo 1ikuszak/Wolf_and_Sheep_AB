@@ -306,8 +306,11 @@ int positionRating(Board *board)
 }
 
 
-void takeBack(Board *board)
+Board takeBack(Board *board)
 {
+    Board *new_board = board;
     board->field.__1D[board->last_move.start_filed] = board->field.__1D[board->last_move.destined_field];
     board->field.__1D[board->last_move.destined_field] = ' ';
+
+    return *new_board;
 }

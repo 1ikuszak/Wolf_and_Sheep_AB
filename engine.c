@@ -68,7 +68,7 @@ void main(void) {
       GenerateSheepMoves(&board);
 
     else if (strstr(bufor, "!negamax") == bufor && dlugosc_bufora == 8)
-      NegaMax(&board, 3, -50000, 50000, &stats);
+      NegaMax(&board, 5, -50000, 50000, &stats);
 
     else if (strstr(bufor, "!back") == bufor && dlugosc_bufora == 5)
     {
