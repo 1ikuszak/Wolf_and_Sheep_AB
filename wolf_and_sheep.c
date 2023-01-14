@@ -12,6 +12,11 @@ int MAX_WOLF_MOVES = 4;
 int MAX_SHEEP_MOVES = 8;
 
 
+Move possible_wolf_moves[4];
+Move possible_sheep_moves[8];
+
+
+
 union 
 {
     char __1D[BOARD_WIDTH * BOARD_HEIGHT][3];
@@ -141,33 +146,31 @@ void int_to_board_pos(int pos)
 }
 
 
-Move *GenerateWolfMoves(Board board)
+Move *GenerateWolfMoves(Board *board)
 {
-    Move possible_wolf_moves[MAX_WOLF_MOVES];
-
     int counter = 0;
 
-    int col =  board.wolf_pos % BOARD_WIDTH;
-    int row = board.wolf_pos / BOARD_WIDTH;
+    int col =  board->wolf_pos % BOARD_WIDTH;
+    int row = board->wolf_pos / BOARD_WIDTH;
 
     // lewy gorny
-    int pos_1 = board.wolf_pos + BOARD_WIDTH - 1;
+    int pos_1 = board->wolf_pos + BOARD_WIDTH - 1;
     // prawy gorny
-    int pos_2 = board.wolf_pos + BOARD_WIDTH + 1;
+    int pos_2 = board->wolf_pos + BOARD_WIDTH + 1;
     // prawy dolny
-    int pos_3 = board.wolf_pos - BOARD_WIDTH + 1;
+    int pos_3 = board->wolf_pos - BOARD_WIDTH + 1;
     // lewy dolny
-    int pos_4 = board.wolf_pos - BOARD_WIDTH - 1;
+    int pos_4 = board->wolf_pos - BOARD_WIDTH - 1;
  
 
     if (row != BOARD_HEIGHT - 1)
     {
-        if (pos_1 > 0 && board.field.__1D[pos_1] == ' ' && col != 0)
+        if (pos_1 > 0 && board->field.__1D[pos_1] == ' ' && col != 0)
         {
             possible_wolf_moves[counter].destined_field = pos_1 ;
             counter ++;
         }
-        if (pos_2> 0  && board.field.__1D[pos_2] == ' ' && col != BOARD_WIDTH - 1)
+        if (pos_2> 0  && board->field.__1D[pos_2] == ' ' && col != BOARD_WIDTH - 1)
         {
             possible_wolf_moves[counter].destined_field = pos_2;
             counter ++;
@@ -175,12 +178,12 @@ Move *GenerateWolfMoves(Board board)
     }
     if (row != 0)
     {
-        if (pos_3 > 0  && board.field.__1D[pos_3] == ' ')
+        if (pos_3 > 0  && board->field.__1D[pos_3] == ' ')
         {
             possible_wolf_moves[counter].destined_field = pos_3;
             counter ++;
         }
-        if (pos_4 > 0  && board.field.__1D[pos_4] == ' ')
+        if (pos_4 > 0  && board->field.__1D[pos_4] == ' ')
         {
             possible_wolf_moves[counter].destined_field = pos_4;
             counter ++;
@@ -190,7 +193,7 @@ Move *GenerateWolfMoves(Board board)
     // ustawienie pola poczatkowego
     for (int i = 0; i < counter; i++)
     {
-        possible_wolf_moves[i].start_filed = board.wolf_pos;
+        possible_wolf_moves[i].start_filed = board->wolf_pos;
     }
     
 
@@ -202,7 +205,7 @@ Move *GenerateWolfMoves(Board board)
         printf("\n");
     }
 
-    board.wolf_moves = counter;
+    board->wolf_moves = counter;
     return(possible_wolf_moves);
 }
 
@@ -210,8 +213,6 @@ Move *GenerateWolfMoves(Board board)
 
 Move *GenerateSheepMoves(Board *board)
 {
-    Move possible_sheep_moves[MAX_SHEEP_MOVES];
-
     int temp_pos;
     int counter = 0;
 
@@ -228,7 +229,7 @@ Move *GenerateSheepMoves(Board *board)
                     if (col != BOARD_WIDTH - 1)
                     {
                         // sprawdzamy czy pole jest wolne
-                        if (board->field.__2D[row + 1][col + 1] != 'S' && board->field.__2D[row + 1][col + 1] != 'W')
+                        if (board->field.__2D[row - 1][col + 1] != 'S' && board->field.__2D[row - 1][col + 1] != 'W')
                         {
                             // dodajemy obiekt (Move) do listy []
                             possible_sheep_moves[counter].start_filed = BOARD_WIDTH * row + col,
@@ -241,7 +242,7 @@ Move *GenerateSheepMoves(Board *board)
                     if(col != 0)
                     {
                         // sprawdzamy czy pole jest wolne
-                        if (board->field.__2D[row + 1][col - 1] != 'S' && board->field.__2D[row + 1][col - 1] != 'W')
+                        if (board->field.__2D[row - 1][col - 1] != 'S' && board->field.__2D[row - 1][col - 1] != 'W')
                         {
                             // dodajemy obiekt (Move) do listy []
                             possible_sheep_moves[counter].start_filed = BOARD_WIDTH * row + col,
@@ -299,57 +300,5 @@ int positionRating(Board *board)
         }
     }
     
-    return(rating);
-}
-
-
-int negmax(Board board, int depth, int alpha, int beta, Statistic *stats)
-{
-    if(!depth)
-    {
-        stats->rated_branch++;
-        return positionRating(&board);
-    }
-    Board temp_board = board;
-    Move *legall;
-    int moves = 0;
-    //Board board1 = &board;
-    if(board.on_move == WOLF)
-    {
-        moves = board.wolf_moves;
-        legall = GenerateWolfMoves(board);
-    }
-
-    if(board.on_move == SHEEP)
-    {
-        moves = board.sheep_moves;
-        legall = GenerateSheepMoves(&board);
-    }
-    stats->knots_w_generated_moves++;
-    int rating = -10000, temp_rating;
-
-    
-    for(int i = 0; i < moves; i++)
-    {
-        printf("hello %d\n", i);
-        //if (flaga_stopu) break;
-
-        if(((clock() - stats->last_print) >(10000 + (rand()/100))))
-        {
-            printf("info nodes %ld time %ld nps %ld\n", stats->rated_branch + stats->knots_w_generated_moves, (clock() - stats->start)/1000, CLOCKS_PER_SEC / (clock() - stats->start));
-            stats->last_print = clock();
-        }
-
-        makeMove(temp_board, legall[i]);
-        temp_rating = -negmax(temp_board, depth - 1, -beta, -alpha, stats);
-
-        if(temp_rating > rating)`
-            rating = temp_rating;
-        if(rating > alpha)
-            alpha = rating;
-        if(alpha >= beta)
-            break;
-    }
-    printf("ocena %d ", rating);
     return(rating);
 }

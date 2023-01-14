@@ -5,6 +5,7 @@
 
 
 #include "wolf_and_sheep.h"
+#include "negamax.h"
 
 
 int flaga_stopu = 0;
@@ -61,11 +62,14 @@ void main(void) {
       }
     }
     else if (strstr(bufor, "!wilk") == bufor && dlugosc_bufora == 5)
-      GenerateWolfMoves(board);
+      GenerateWolfMoves(&board);
     
     else if (strstr(bufor, "!owca") == bufor && dlugosc_bufora == 5)
       GenerateSheepMoves(&board);
-      negmax(&board, 5, -10000, 10000, &stats);
+
+    else if (strstr(bufor, "!negamax") == bufor && dlugosc_bufora == 8)
+      negamax(&board, 3, -10000, 10000, &stats);
+
   }
 
   pthread_join(watek_silnika, NULL);

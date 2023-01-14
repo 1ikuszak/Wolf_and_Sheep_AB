@@ -48,14 +48,13 @@ typedef struct
 extern void display(Board *board);
 extern Board start_layout;
 extern Board makeMove(Board board, Move move);
-extern Move *GenerateWolfMoves(Board board);
+extern Move *GenerateWolfMoves(Board *board);
 extern Move *GenerateSheepMoves(Board *board);
 extern bool checkIfLegal(Board *board, Move move);
 extern bool WolfWinCheck (Board *board);
 extern bool SheepWinCheck(Board *board);
 extern bool WolfWinCheck (Board *board);
 extern int positionRating(Board *board);
-extern int negmax(Board *board, int depth, int alpha, int beta, Statistic* stats);
 
 
 
