@@ -9,6 +9,13 @@
 
 typedef enum{WOLF, SHEEP} side;
 
+
+typedef struct 
+{
+  char start_filed, destined_field;
+} Move;
+
+
 typedef struct
 {
   union
@@ -21,26 +28,21 @@ typedef struct
   int wolf_pos;
   int wolf_moves;
   int sheep_moves;
+  Move last_move;
   
 } Board;
-
-
-typedef struct 
-{
-  char start_filed, destined_field;
-} Move;
 
 
 
 typedef struct 
 {
   int search_depth;
-  int knots_w_generated_moves;
+  int leaf;
   int rated_branch;
   int number_of_moves;
   int last_print;
   int start;
-  char moves[];
+  Move moves[];
 } Statistic;
 
 
@@ -55,8 +57,6 @@ extern bool WolfWinCheck (Board *board);
 extern bool SheepWinCheck(Board *board);
 extern bool WolfWinCheck (Board *board);
 extern int positionRating(Board *board);
-
-
 
 
 #endif

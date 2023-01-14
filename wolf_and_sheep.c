@@ -72,6 +72,7 @@ Board makeMove(Board board, Move move)
 
     new_board.field.__1D[move.destined_field] = new_board.field.__1D[move.start_filed];
     new_board.field.__1D[move.start_filed] = ' ';
+    new_board.last_move = move;
 
     if (new_board.on_move == WOLF)
     {
@@ -280,7 +281,8 @@ bool SheepWinCheck(Board *board)
 
 int positionRating(Board *board)
 {
-    int rating = 0;
+    int rating;
+
     switch (board->on_move)
     {
     case WOLF:
@@ -290,7 +292,7 @@ int positionRating(Board *board)
     }
     case SHEEP:
     {
-        rating = 5 - board->wolf_moves;
+        rating = (board->wolf_moves);
         break;
     }
     default:
