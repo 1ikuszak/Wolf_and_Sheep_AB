@@ -304,3 +304,10 @@ int positionRating(Board *board)
     
     return(rating);
 }
+
+
+void takeBack(Board *board)
+{
+    board->field.__1D[board->last_move.start_filed] = board->field.__1D[board->last_move.destined_field];
+    board->field.__1D[board->last_move.destined_field] = ' ';
+}

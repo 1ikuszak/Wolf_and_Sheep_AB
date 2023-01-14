@@ -57,6 +57,7 @@ extern bool WolfWinCheck (Board *board);
 extern bool SheepWinCheck(Board *board);
 extern bool WolfWinCheck (Board *board);
 extern int positionRating(Board *board);
+extern void takeBack(Board *board);
 
 
 #endif

@@ -72,7 +72,7 @@ void main(void) {
 
     else if (strstr(bufor, "!back") == bufor && dlugosc_bufora == 5)
     {
-      // takeBack(&board);
+      takeBack(&board);
       display(&board);
     }
   }
