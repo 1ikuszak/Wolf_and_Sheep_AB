@@ -179,12 +179,12 @@ Move *GenerateWolfMoves(Board *board)
     }
     if (row != 0)
     {
-        if (pos_3 > 0  && board->field.__1D[pos_3] == ' ')
+        if (pos_3 > 0  && board->field.__1D[pos_3] == ' ' && col != BOARD_WIDTH - 1)
         {
             possible_wolf_moves[counter].destined_field = pos_3;
             counter ++;
         }
-        if (pos_4 > 0  && board->field.__1D[pos_4] == ' ')
+        if (pos_4 > 0  && board->field.__1D[pos_4] == ' ' && col != 0)
         {
             possible_wolf_moves[counter].destined_field = pos_4;
             counter ++;
@@ -292,7 +292,7 @@ int positionRating(Board *board)
     }
     case SHEEP:
     {
-        rating = (board->wolf_moves);
+        rating = -(board->wolf_moves);
         break;
     }
     default:

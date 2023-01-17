@@ -57,13 +57,15 @@ int NegaMax(Board *board, int depth, int alpha, int beta, Statistic *stats)
             stats->last_print = clock();
         }
 
-        Board copy = *board;
+        // Board copy = *board;
         stats->moves[stats->number_of_moves] = legall_moves[i];
         
         // wykonaj symulacyjne ruchy, ruch
-        makeMove(*board, legall_moves[i]);
+        *board = makeMove(*board, legall_moves[i]);
         current_score = -NegaMax(board, depth - 1, -beta, -alpha, stats);
-        // cofnij ruch
+        display(board);
+        // cofnij ruch 
+        // znikaja figury
         takeBack(board);
 
         // alfa beta 
@@ -75,9 +77,7 @@ int NegaMax(Board *board, int depth, int alpha, int beta, Statistic *stats)
         if(alpha >= beta)
             break;
     }
-    display(board);
-    printf("finalowa ocena %d\n", score);
-    printf("najlepszy ruch %d -> %d\n", best_move.start_filed, best_move.destined_field);
+    printf("ocena: %d najlepszy ruch %d -> %d\n",score, best_move.start_filed, best_move.destined_field);
 
     return(score);
 }
