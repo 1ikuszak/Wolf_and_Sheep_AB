@@ -40,7 +40,7 @@ void main(void) {
     }
 
     if (strstr(bufor, "uci") == bufor && dlugosc_bufora == 3)
-      printf("id name Entropia 1.0\nid author Donica\nuciok\n");
+      printf("id name enige 1.0\nid author Dejno 1ikuszak\nuciok\n");
 
     else if (strstr(bufor, "isready") == bufor && dlugosc_bufora == 7)
       printf("readyok\n");
