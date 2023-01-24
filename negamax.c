@@ -1,5 +1,6 @@
 #include<stdio.h>
 #include<time.h>
+#include <stdlib.h>
 #include "wolf_and_sheep.h"
 #include "negamax.h"
 
@@ -32,9 +33,10 @@ int NegaMax(Board *board, int depth, int alpha, int beta, Statistic *stats)
     if(stats->search_depth == depth)
         stats->start = clock();
     
+    Board *copy_board = malloc(sizeof(board)*1000);
     int score = -10000, current_score;
     Move *legall_moves;
-    Move best_move;
+    
     int moves;
     if(board->on_move == WOLF)
     {
@@ -54,25 +56,25 @@ int NegaMax(Board *board, int depth, int alpha, int beta, Statistic *stats)
         stats->moves[stats->number_of_moves] = legall_moves[i];
         
         // wykonaj symulacyjne ruchy, ruch
-        makeMove(*board, legall_moves[i]);
-        current_score = -NegaMax(board, depth - 1, -beta, -alpha, stats);
+        *copy_board = makeMove(*board, legall_moves[i]);
+        current_score = -NegaMax(copy_board, depth - 1, -beta, -alpha, stats);
         // cofnij ruch 
         // znikaja figury
-        takeBack_2(board);
+        // display(board);
+        // takeBack_3(board);
         // display(board);
 
 
         // alfa beta 
         if(current_score > score)
             score = current_score;
-            best_move = legall_moves[i];
+            stats->best_move = legall_moves[i];
         if(score > alpha)
             alpha = score;
         if(alpha >= beta)
             break;
     }
-    printf("ocena: %d najlepszy ruch %d -> %d\n",score, best_move.start_filed, best_move.destined_field);
-    display(board);
-
+    // printf("ocena: %d najlepszy ruch %d -> %d\n",score, best_move.start_filed, best_move.destined_field);
+    free(copy_board);
     return(score);
 }

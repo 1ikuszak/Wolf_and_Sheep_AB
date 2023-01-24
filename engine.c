@@ -68,12 +68,24 @@ void main(void) {
       GenerateSheepMoves(&board);
 
     else if (strstr(bufor, "!negamax") == bufor && dlugosc_bufora == 8)
-      NegaMax(&board, 5, -50000, 50000, &stats);
-
+    {
+      NegaMax(&board, 3, -50000, 50000, &stats);
+      printf("%d -> %d", stats.best_move.start_filed, stats.best_move.destined_field);
+    }
     else if (strstr(bufor, "!back") == bufor && dlugosc_bufora == 5)
     {
-      takeBack(&board);
+      takeBack_3(&board);
       display(&board);
+    }
+    else if(strstr(bufor, "!play") == bufor && dlugosc_bufora == 5)
+    {
+      for (int i = 0; i < 12; i++)
+      {
+        NegaMax(&board, 5, -50000, 50000, &stats);
+        board = makeMove(board, (Move) {.start_filed=stats.best_move.start_filed, .destined_field=stats.best_move.destined_field});
+        display(&board); 
+      }
+      
     }
   }
 
