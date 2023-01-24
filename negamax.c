@@ -50,23 +50,17 @@ int NegaMax(Board *board, int depth, int alpha, int beta, Statistic *stats)
 
     for(int i = 0; i < moves; i++)
     {
-        // zegar
-        if(((clock() - stats->last_print) >(10000 + (rand()/100))))
-        {
-            printf("info nodes %ld time %ld nps %ld\n", stats->rated_branch + stats->leaf, (clock() - stats->start)/1000, CLOCKS_PER_SEC / (clock() - stats->start));
-            stats->last_print = clock();
-        }
-
         // Board copy = *board;
         stats->moves[stats->number_of_moves] = legall_moves[i];
         
         // wykonaj symulacyjne ruchy, ruch
-        *board = makeMove(*board, legall_moves[i]);
+        makeMove(*board, legall_moves[i]);
         current_score = -NegaMax(board, depth - 1, -beta, -alpha, stats);
-        display(board);
         // cofnij ruch 
         // znikaja figury
-        takeBack(board);
+        takeBack_2(board);
+        // display(board);
+
 
         // alfa beta 
         if(current_score > score)
@@ -78,6 +72,7 @@ int NegaMax(Board *board, int depth, int alpha, int beta, Statistic *stats)
             break;
     }
     printf("ocena: %d najlepszy ruch %d -> %d\n",score, best_move.start_filed, best_move.destined_field);
+    display(board);
 
     return(score);
 }
