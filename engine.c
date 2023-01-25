@@ -10,7 +10,7 @@
 
 int flaga_stopu = 0;
 Move mozliwe_ruchy[100];
-Statistic stats;
+Statistic stats = (Statistic) {.leaf=0, .number_of_moves=0, .rated_positions=0};
 
 
 void silnik() {}
@@ -22,7 +22,6 @@ void main(void) {
   
   // bufor na dane wejsciowe
   char bufor[1024];
-
   int dlugosc_bufora;
 
   if (pthread_create(&watek_silnika, NULL, (void *)silnik, NULL)) {
@@ -71,21 +70,42 @@ void main(void) {
     {
       NegaMax(&board, 3, -50000, 50000, &stats);
       printf("%d -> %d", stats.best_move.start_filed, stats.best_move.destined_field);
+      // reset negamax
+      stats.leaf = 0;
+      stats.number_of_moves = 0;
+      stats.rated_positions = 0;
     }
     else if (strstr(bufor, "!back") == bufor && dlugosc_bufora == 5)
     {
-      takeBack_3(&board);
+      board = takeBack(&board);
       display(&board);
     }
     else if(strstr(bufor, "!play") == bufor && dlugosc_bufora == 5)
     {
-      for (int i = 0; i < 12; i++)
+      for(printf("gra rozpoczeta\n");; scanf("\n"))
       {
-        NegaMax(&board, 5, -50000, 50000, &stats);
-        board = makeMove(board, (Move) {.start_filed=stats.best_move.start_filed, .destined_field=stats.best_move.destined_field});
-        display(&board); 
-      }
-      
+        scanf("%[^\n]", bufor);
+        dlugosc_bufora = strlen(bufor);
+        display(&board);
+        if (strstr(bufor, "!ruch") == bufor && dlugosc_bufora == 11)
+        {
+          if (checkIfLegal(&board, (Move) {.start_filed = (bufor[7] - '1') * 8 + bufor[6] - 'a',
+          .destined_field = (bufor[10] - '1') * 8 + bufor[9] - 'a'}))
+          {
+            board = makeMove(board, (Move) {.start_filed = (bufor[7] - '1') * 8 + bufor[6] - 'a',
+            .destined_field = (bufor[10] - '1') * 8 + bufor[9] - 'a'}); 
+          }
+          NegaMax(&board, 5, -50000, 50000, &stats);
+          board = makeMove(board, stats.best_move);
+          display(&board);
+        }
+        
+        else if (strstr(bufor, "quit") == bufor && dlugosc_bufora == 4) 
+        {
+          flaga_stopu = 1;
+          break;
+        }   
+      } 
     }
   }
 

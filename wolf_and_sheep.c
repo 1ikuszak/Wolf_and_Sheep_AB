@@ -75,10 +75,7 @@ Board makeMove(Board board, Move move)
     new_board.field.__1D[move.start_filed] = ' ';
 
     new_board.last_move = move;
-    new_board.moves_made[(new_board.no_of_moves) - 1] = move;
-
     
-
 
     if (new_board.on_move == WOLF)
     {
@@ -206,13 +203,13 @@ Move *GenerateWolfMoves(Board *board)
     }
     
 
-    printf("ruchy:\n");
-    for (int i = 0; i < counter; i++)
-    {
-        printf("|%d| field: %d -> %d", i, possible_wolf_moves[i].start_filed, possible_wolf_moves[i].destined_field);
-        int_to_board_pos(possible_wolf_moves[i].destined_field);
-        printf("\n");
-    }
+    // printf("ruchy:\n");
+    // for (int i = 0; i < counter; i++)
+    // {
+    //     printf("|%d| field: %d -> %d", i, possible_wolf_moves[i].start_filed, possible_wolf_moves[i].destined_field);
+    //     int_to_board_pos(possible_wolf_moves[i].destined_field);
+    //     printf("\n");
+    // }
 
     board->wolf_moves = counter;
     return(possible_wolf_moves);
@@ -243,7 +240,7 @@ Move *GenerateSheepMoves(Board *board)
                             // dodajemy obiekt (Move) do listy []
                             possible_sheep_moves[counter].start_filed = BOARD_WIDTH * row + col,
                             possible_sheep_moves[counter].destined_field = BOARD_WIDTH * (row-1) + col + 1;
-                            printf("|%d| field: %d -> %d\n", counter, possible_sheep_moves[counter].start_filed, possible_sheep_moves[counter].destined_field);
+                            // printf("|%d| field: %d -> %d\n", counter, possible_sheep_moves[counter].start_filed, possible_sheep_moves[counter].destined_field);
                             counter ++;
                         }
                     }
@@ -256,7 +253,7 @@ Move *GenerateSheepMoves(Board *board)
                             // dodajemy obiekt (Move) do listy []
                             possible_sheep_moves[counter].start_filed = BOARD_WIDTH * row + col,
                             possible_sheep_moves[counter].destined_field = BOARD_WIDTH * (row-1) + col - 1;
-                            printf("|%d| field: %d -> %d\n", counter, possible_sheep_moves[counter].start_filed, possible_sheep_moves[counter].destined_field);
+                            // printf("|%d| field: %d -> %d\n", counter, possible_sheep_moves[counter].start_filed, possible_sheep_moves[counter].destined_field);
                             counter ++;
                         }
                     }
@@ -265,7 +262,6 @@ Move *GenerateSheepMoves(Board *board)
         }
     }
     board->sheep_moves = counter;
-
     return (possible_sheep_moves);
 }
 
@@ -293,19 +289,14 @@ int positionRating(Board *board)
 
     switch (board->on_move)
     {
-    case WOLF:
-    {
-        rating = (board->wolf_pos / BOARD_WIDTH) + 1;
-        break;
-    }
-    case SHEEP:
-    {
-        rating = -(board->wolf_moves);
-        break;
-    }
-    default:
+        case WOLF:
         {
-            printf("rating went wrong");
+            rating = (board->wolf_pos / BOARD_WIDTH) + 1;
+            break;
+        }
+        case SHEEP:
+        {
+            rating = -(board->wolf_moves);
             break;
         }
     }
@@ -320,91 +311,23 @@ Board takeBack(Board *board)
     board->field.__1D[board->last_move.start_filed] = board->field.__1D[board->last_move.destined_field];
     board->field.__1D[board->last_move.destined_field] = ' ';
     
-    
-    return *new_board;
-}
-
-// Board takeBack_2(Board *board)
-// {
-    
-//     Board new_board = makeMove(*board, (Move) {.destined_field = board->field.__1D[board->last_move.start_filed], .start_filed = board->field.__1D[board->last_move.destined_field]});
-
-//     switch (board->on_move)
-//     {
-//     case WOLF:
-//     {
-//         new_board.on_move = SHEEP;
-//         break;
-//     }
-//     case SHEEP:
-//     {
-//         new_board.on_move = WOLF;
-//         break;
-//     }
-
-//     default:
-//         break;
-//     }
-
-//     return new_board;
-    
-// }
-
-Board takeBack_2(Board *board)
-{
-    makeMove(*board, (Move) {.destined_field = board->field.__1D[board->last_move.start_filed], .start_filed = board->field.__1D[board->last_move.destined_field]});
-}
-
-
-Board takeBack_3(Board *board)
-{
-    Board *new_board = board;
-    if(board->no_of_moves != 0)
-    {
-        board->field.__1D[board->moves_made[board->no_of_moves-1].start_filed] = board->field.__1D[board->moves_made[board->no_of_moves-1].destined_field];
-        board->field.__1D[board->moves_made[board->no_of_moves-1].destined_field] = ' ';
-        board->no_of_moves--;
-    }
-    else printf("no moves\n");
-
     switch (board->on_move)
     {
-        case WOLF:
-        {
-            board->on_move = SHEEP;
-            break;
-        }
-        case SHEEP:
-        {
-            board->on_move = WOLF;
-            break;
-        }
-
-        default:
-            break;
+    case WOLF:
+    {
+        new_board->on_move = SHEEP;
+        break;
     }
-    
+    case SHEEP:
+    {
+        new_board->on_move= WOLF;
+        break;
+    }
+
+    default:
+        break;
+    }
 
     return *new_board;
 }
 
-
-// Board takeBack_4(Board *board, Statistic stats)
-// {
-//     makeMove(*board, (Move) {.destined_field = board->field.__1D[stats.moves[-1].start_filed], .start_filed = board->field.__1D[board->last_move.destined_field]});
-
-//     switch (board->on_move)
-//     {
-//     case WOLF:
-//     {
-//         board->on_move = SHEEP;
-//     }
-//     case SHEEP:
-//     {
-//         board->on_move = WOLF;
-//     }
-
-//     default:
-//         break;
-//     }
-// }

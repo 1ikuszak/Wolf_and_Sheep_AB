@@ -29,7 +29,6 @@ typedef struct
   int wolf_moves;
   int sheep_moves;
   int no_of_moves;
-  Move moves_made[100];
   Move last_move;
   
 } Board;
@@ -38,12 +37,9 @@ typedef struct
 
 typedef struct 
 {
-  int search_depth;
   int leaf;
-  int rated_branch;
   int number_of_moves;
-  int last_print;
-  int start;
+  int rated_positions;
   Move best_move;
   Move moves[];
 } Statistic;
@@ -62,7 +58,6 @@ extern bool WolfWinCheck (Board *board);
 extern int positionRating(Board *board);
 extern Board takeBack_2(Board *board);
 extern Board takeBack(Board *board);
-extern Board takeBack_3(Board *board);
 
 
 #endif
