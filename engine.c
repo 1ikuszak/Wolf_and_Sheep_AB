@@ -85,9 +85,8 @@ void main(void) {
     }
     else if (strstr(bufor, "!ai") == bufor && dlugosc_bufora == 3)
     {
-      Board coppy_board = board;
-      NegaMax(&coppy_board, 5, -50000, 50000, &stats);
-      printf("%d->%d", stats.best_move.start_filed, stats.best_move.destined_field);
+      NegaMax(&board, 5, -50000, 50000, &stats);
+      printf("%d, %d->%d",stats.leaf, stats.best_move.start_filed, stats.best_move.destined_field);
       Statistic stats = (Statistic) {.leaf=0, .number_of_moves=0, .rated_positions=0};
         // display(&board);
     }
@@ -108,9 +107,9 @@ void main(void) {
           }
           Board coppy_board = board;
           NegaMax(&coppy_board, 5, -50000, 50000, &stats);
-          printf("%d->%d", stats.best_move.start_filed, stats.best_move.destined_field);
+          board = makeMove(board, stats.best_move);
           Statistic stats = (Statistic) {.leaf=0, .number_of_moves=0, .rated_positions=0};
-          // display(&board);
+          display(&board);
         }
         
         else if (strstr(bufor, "quit") == bufor && dlugosc_bufora == 4) 

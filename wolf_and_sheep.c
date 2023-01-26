@@ -292,11 +292,15 @@ int positionRating(Board *board)
         case WOLF:
         {
             rating = (board->wolf_pos / BOARD_WIDTH) + 1;
+            if(((board->wolf_pos/ BOARD_WIDTH) + 1) == 8)
+                rating = 1000;
             break;
         }
         case SHEEP:
         {
             rating = -(board->wolf_moves);
+            if(board->wolf_moves == 0)
+                rating = 1000;
             break;
         }
     }
